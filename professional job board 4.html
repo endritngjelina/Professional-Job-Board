@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCareers - Professional Job Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #fbbc04;
+            --danger-color: #ea4335;
+            --dark-bg: #202124;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #3c4043;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 24px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .search-hero {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-hero input {
+            width: 100%;
+            padding: 18px 60px 18px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-hero button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--light-bg);
+            padding: 30px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(66, 133, 244, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .job-count {
+            background: var(--text-secondary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .salary-range {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .salary-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .salary-inputs input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .main-jobs {
+            padding: 30px;
+        }
+
+        .jobs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .jobs-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .results-count {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sort-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sort-controls select {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .view-toggle button {
+            padding: 10px 15px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-toggle button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .jobs-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .jobs-grid.grid-view {
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .job-company {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .job-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .job-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .job-tag {
+            background: var(--light-bg);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .job-salary {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 16px;
+        }
+
+        .job-posted {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .clear-filters {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .pagination button {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .pagination button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .saved-jobs {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .saved-jobs-count {
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .jobs-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .jobs-grid.grid-view {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .animate-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">TechCareers</a>
+                <div class="header-actions">
+                    <a href="#" class="btn btn-secondary">For Employers</a>
+                    <a href="#" class="btn btn-primary">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="hero">
+                <h1>Find Your Dream Tech Job</h1>
+                <p>Discover opportunities at the world's leading technology companies</p>
+                <div class="search-hero">
+                    <input type="text" id="heroSearch" placeholder="Search jobs, companies, or skills..." aria-label="Search jobs">
+                    <button type="button" onclick="performHeroSearch()">🔍</button>
+                </div>
+            </section>
+
+            <div class="content-grid">
+                <aside class="sidebar">
+                    <div class="filter-section">
+                        <h3>Job Type</h3>
+                        <div class="filter-group" id="jobTypeFilters">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="fulltime" value="Full-time">
+                                <label for="fulltime">Full-time <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="parttime" value="Part-time">
+                                <label for="parttime">Part-time <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="contract" value="Contract">
+                                <label for="contract">Contract <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="remote" value="Remote">
+                                <label for="remote">Remote <span class="job-count">0</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Experience Level</h3>
+                        <div class="filter-group" id="experienceFilters">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="entry" value="Entry Level">
+                                <label for="entry">Entry Level <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="mid" value="Mid Level">
+                                <label for="mid">Mid Level <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="senior" value="Senior Level">
+                                <label for="senior">Senior Level <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="lead" value="Lead">
+                                <label for="lead">Lead <span class="job-count">0</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Location</h3>
+                        <div class="filter-group" id="locationFilters">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sf" value="San Francisco">
+                                <label for="sf">San Francisco <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ny" value="New York">
+                                <label for="ny">New York <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="seattle" value="Seattle">
+                                <label for="seattle">Seattle <span class="job-count">0</span></label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="austin" value="Austin">
+                                <label for="austin">Austin <span class="job-count">0</span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Salary Range</h3>
+                        <div class="salary-range">
+                            <div class="salary-inputs">
+                                <input type="number" id="minSalary" placeholder="Min" min="0">
+                                <input type="number" id="maxSalary" placeholder="Max" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="clear-filters" onclick="clearAllFilters()">Clear All Filters</button>
+                </aside>
+
+                <main class="main-jobs">
+                    <div class="jobs-header">
+                        <div class="jobs-stats">
+                            <div class="results-count" id="resultsCount">Loading...</div>
+                        </div>
+                        <div class="sort-controls">
+                            <select id="sortBy">
+                                <option value="relevance">Sort by Relevance</option>
+                                <option value="date">Sort by Date</option>
+                                <option value="salary">Sort by Salary</option>
+                                <option value="company">Sort by Company</option>
+                            </select>
+                            <div class="view-toggle">
+                                <button class="active" onclick="toggleView('list')">List</button>
+                                <button onclick="toggleView('grid')">Grid</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jobs-grid" id="jobsGrid">
+                        <div class="loading">Loading amazing opportunities...</div>
+                    </div>
+
+                    <div class="pagination" id="pagination"></div>
+                </main>
+            </div>
+        </div>
+    </main>
+
+    <div class="saved-jobs" onclick="toggleSavedJobs()">
+        💾 <span id="savedCount" class="saved-jobs-count">0</span>
+    </div>
+
+    <script>
+        // Mock job data - in real app, this would come from an API
+        const jobsData = [
+            {
+                id: 1,
+                title: "Senior Software Engineer",
+                company: "Google",
+                location: "San Francisco",
+                type: "Full-time",
+                experience: "Senior Level",
+                salary: "$180,000 - $250,000",
+                salaryMin: 180000,
+                salaryMax: 250000,
+                description: "Join our team building next-generation cloud infrastructure. Work with cutting-edge technologies and collaborate with brilliant minds to solve complex problems at scale.",
+                tags: ["JavaScript", "Python", "Cloud", "Kubernetes"],
+                postedDate: "2 days ago",
+                logo: "G"
+            },
+            {
+                id: 2,
+                title: "Product Manager",
+                company: "Meta",
+                location: "New York",
+                type: "Full-time",
+                experience: "Mid Level",
+                salary: "$150,000 - $200,000",
+                salaryMin: 150000,
+                salaryMax: 200000,
+                description: "Lead product strategy for our social media platform. Define roadmaps, work with engineering teams, and drive user engagement initiatives.",
+                tags: ["Product Strategy", "Analytics", "A/B Testing", "User Research"],
+                postedDate: "1 day ago",
+                logo: "M"
+            },
+            {
+                id: 3,
+                title: "Frontend Developer",
+                company: "Netflix",
+                location: "Remote",
+                type: "Remote",
+                experience: "Mid Level",
+                salary: "$120,000 - $160,000",
+                salaryMin: 120000,
+                salaryMax: 160000,
+                description: "Build beautiful, responsive user interfaces for our streaming platform. Work with React, TypeScript, and modern web technologies.",
+                tags: ["React", "TypeScript", "CSS", "WebGL"],
+                postedDate: "3 days ago",
+                logo: "N"
+            },
+            {
+                id: 4,
+                title: "Data Scientist",
+                company: "Amazon",
+                location: "Seattle",
+                type: "Full-time",
+                experience: "Senior Level",
+                salary: "$160,000 - $220,000",
+                salaryMin: 160000,
+                salaryMax: 220000,
+                description: "Apply machine learning to improve our recommendation systems. Work with large datasets and cutting-edge ML algorithms.",
+                tags: ["Python", "Machine Learning", "SQL", "TensorFlow"],
+                postedDate: "1 week ago",
+                logo: "A"
+            },
+            {
+                id: 5,
+                title: "UX Designer",
+                company: "Apple",
+                location: "San Francisco",
+                type: "Full-time",
+                experience: "Mid Level",
+                salary: "$130,000 - $180,000",
+                salaryMin: 130000,
+                salaryMax: 180000,
+                description: "Design intuitive user experiences for our consumer products. Collaborate with engineering and product teams to bring ideas to life.",
+                tags: ["Figma", "Prototyping", "User Research", "Design Systems"],
+                postedDate: "4 days ago",
+                logo: "🍎"
+            },
+            {
+                id: 6,
+                title: "DevOps Engineer",
+                company: "Microsoft",
+                location: "Austin",
+                type: "Full-time",
+                experience: "Senior Level",
+                salary: "$140,000 - $190,000",
+                salaryMin: 140000,
+                salaryMax: 190000,
+                description: "Build and maintain CI/CD pipelines for our cloud services. Work with Azure, Kubernetes, and infrastructure as code.",
+                tags: ["Azure", "Kubernetes", "Docker", "Terraform"],
+                postedDate: "5 days ago",
+                logo: "MS"
+            },
+            {
+                id: 7,
+                title: "Junior Developer",
+                company: "Stripe",
+                location: "Remote",
+                type: "Remote",
+                experience: "Entry Level",
+                salary: "$90,000 - $120,000",
+                salaryMin: 90000,
+                salaryMax: 120000,
+                description: "Start your career in fintech! Work on payment processing systems and learn from experienced mentors.",
+                tags: ["JavaScript", "Node.js", "APIs", "Payments"],
+                postedDate: "2 days ago",
+                logo: "S"
+            },
+            {
+                id: 8,
+                title: "Mobile Developer",
+                company: "Uber",
+                location: "San Francisco",
+                type: "Full-time",
+                experience: "Mid Level",
+                salary: "$130,000 - $170,000",
+                salaryMin: 130000,
+                salaryMax: 170000,
+                description: "Develop native mobile applications for iOS and Android. Work on features used by millions of users worldwide.",
+                tags: ["Swift", "Kotlin", "React Native", "Mobile"],
+                postedDate: "1 week ago",
+                logo: "U"
+            },
+            {
+                id: 9,
+                title: "Security Engineer",
+                company: "Tesla",
+                location: "Austin",
+                type: "Full-time",
+                experience: "Senior Level",
+                salary: "$170,000 - $230,000",
+                salaryMin: 170000,
+                salaryMax: 230000,
+                description: "Protect our infrastructure and vehicles from cyber threats. Work on cutting-edge security solutions for autonomous vehicles.",
+                tags: ["Cybersecurity", "Penetration Testing", "Network Security", "Automotive"],
+                postedDate: "3 days ago",
+                logo: "T"
+            },
+            {
+                id: 10,
+                title: "AI Research Scientist",
+                company: "OpenAI",
+                location: "San Francisco",
+                type: "Full-time",
+                experience: "Lead",
+                salary: "$200,000 - $300,000",
+                salaryMin: 200000,
+                salaryMax: 300000,
+                description: "Advance the field of artificial intelligence through groundbreaking research. Work on large language models and AI safety.",
+                tags: ["AI", "Machine Learning", "Research", "Python"],
+                postedDate: "1 day ago",
+                logo: "AI"
+            },
+            {
+                id: 11,
+                title: "Blockchain Developer",
+                company: "Coinbase",
+                location: "New York",
+                type: "Contract",
+                experience: "Mid Level",
+                salary: "$100,000 - $150,000",
+                salaryMin: 100000,
+                salaryMax: 150000,
+                description: "Build decentralized applications and smart contracts. Work with Web3 technologies and cryptocurrency platforms.",
+                tags: ["Solidity", "Web3", "Ethereum", "DeFi"],
+                postedDate: "6 days ago",
+                logo: "CB"
+            },
+            {
+                id: 12,
+                title: "QA Engineer",
+                company: "Airbnb",
+                location: "Remote",
+                type: "Part-time",
+                experience: "Entry Level",
+                salary: "$60,000 - $80,000",
+                salaryMin: 60000,
+                salaryMax: 80000,
+                description: "Ensure quality across our platform through comprehensive testing. Work with automation tools and collaborate with development teams.",
+                tags: ["Testing", "Automation", "Selenium", "QA"],
+                postedDate: "4 days ago",
+                logo: "AB"
+            }
+        ];
+
+        // Application state
+        let currentJobs = [...jobsData];
+        let filteredJobs = [...jobsData];
+        let savedJobs = [];
+        let currentPage = 1;
+        let currentView = 'list';
+        const jobsPerPage = 6;
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            renderJobs();
+            updateFilterCounts();
+            
+            // Add event listeners for filters
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+            
+            document.getElementById('minSalary').addEventListener('input', applyFilters);
+            document.getElementById('maxSalary').addEventListener('input', applyFilters);
+            document.getElementById('sortBy').addEventListener('change', handleSort);
+            document.getElementById('heroSearch').addEventListener('input', performSearch);
+        });
+
+        function initializeFilters() {
+            updateFilterCounts();
+        }
+
+        function updateFilterCounts() {
+            // Job Type counts
+            const jobTypeCounts = {
+                'Full-time': jobsData.filter(job => job.type === 'Full-time').length,
+                'Part-time': jobsData.filter(job => job.type === 'Part-time').length,
+                'Contract': jobsData.filter(job => job.type === 'Contract').length,
+                'Remote': jobsData.filter(job => job.type === 'Remote').length
+            };
+
+            // Experience Level counts
+            const experienceCounts = {
+                'Entry Level': jobsData.filter(job => job.experience === 'Entry Level').length,
+                'Mid Level': jobsData.filter(job => job.experience === 'Mid Level').length,
+                'Senior Level': jobsData.filter(job => job.experience === 'Senior Level').length,
+                'Lead': jobsData.filter(job => job.experience === 'Lead').length
+            };
+
+            // Location counts
+            const locationCounts = {
+                'San Francisco': jobsData.filter(job => job.location === 'San Francisco').length,
+                'New York': jobsData.filter(job => job.location === 'New York').length,
+                'Seattle': jobsData.filter(job => job.location === 'Seattle').length,
+                'Austin': jobsData.filter(job => job.location === 'Austin').length
+            };
+
+            // Update UI
+            updateCountsInUI(jobTypeCounts, 'jobTypeFilters');
+            updateCountsInUI(experienceCounts, 'experienceFilters');
+            updateCountsInUI(locationCounts, 'locationFilters');
+        }
+
+        function updateCountsInUI(counts, containerId) {
+            const container = document.getElementById(containerId);
+            const labels = container.querySelectorAll('label');
+            
+            labels.forEach(label => {
+                const checkbox = label.previousElementSibling;
+                const value = checkbox.value;
+                const countSpan = label.querySelector('.job-count');
+                if (countSpan && counts[value] !== undefined) {
+                    countSpan.textContent = counts[value];
+                }
+            });
+        }
+
+        function applyFilters() {
+            const selectedJobTypes = Array.from(document.querySelectorAll('#jobTypeFilters input:checked')).map(cb => cb.value);
+            const selectedExperience = Array.from(document.querySelectorAll('#experienceFilters input:checked')).map(cb => cb.value);
+            const selectedLocations = Array.from(document.querySelectorAll('#locationFilters input:checked')).map(cb => cb.value);
+            
+            const minSalary = parseInt(document.getElementById('minSalary').value) || 0;
+            const maxSalary = parseInt(document.getElementById('maxSalary').value) || Infinity;
+            
+            filteredJobs = jobsData.filter(job => {
+                const matchesJobType = selectedJobTypes.length === 0 || selectedJobTypes.includes(job.type);
+                const matchesExperience = selectedExperience.length === 0 || selectedExperience.includes(job.experience);
+                const matchesLocation = selectedLocations.length === 0 || selectedLocations.includes(job.location);
+                const matchesSalary = job.salaryMin >= minSalary && job.salaryMax <= maxSalary;
+                
+                return matchesJobType && matchesExperience && matchesLocation && matchesSalary;
+            });
+            
+            currentPage = 1;
+            renderJobs();
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('heroSearch').value.toLowerCase();
+            
+            if (searchTerm.trim() === '') {
+                filteredJobs = [...jobsData];
+            } else {
+                filteredJobs = jobsData.filter(job => 
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.description.toLowerCase().includes(searchTerm) ||
+                    job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            currentPage = 1;
+            renderJobs();
+        }
+
+        function performHeroSearch() {
+            performSearch();
+        }
+
+        function handleSort() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            switch(sortBy) {
+                case 'date':
+                    filteredJobs.sort((a, b) => {
+                        const dateA = parseDateString(a.postedDate);
+                        const dateB = parseDateString(b.postedDate);
+                        return dateA - dateB;
+                    });
+                    break;
+                case 'salary':
+                    filteredJobs.sort((a, b) => b.salaryMax - a.salaryMax);
+                    break;
+                case 'company':
+                    filteredJobs.sort((a, b) => a.company.localeCompare(b.company));
+                    break;
+                default:
+                    // Keep original order for relevance
+                    filteredJobs = [...filteredJobs];
+            }
+            
+            renderJobs();
+        }
+
+        function parseDateString(dateStr) {
+            const now = new Date();
+            if (dateStr.includes('day')) {
+                const days = parseInt(dateStr.match(/\d+/)[0]);
+                return new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+            } else if (dateStr.includes('week')) {
+                const weeks = parseInt(dateStr.match(/\d+/)[0]);
+                return new Date(now.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
+            }
+            return now;
+        }
+
+        function renderJobs() {
+            const jobsGrid = document.getElementById('jobsGrid');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            // Update results count
+            resultsCount.textContent = `${filteredJobs.length} jobs found`;
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+            const startIndex = (currentPage - 1) * jobsPerPage;
+            const endIndex = startIndex + jobsPerPage;
+            const currentJobs = filteredJobs.slice(startIndex, endIndex);
+            
+            if (currentJobs.length === 0) {
+                jobsGrid.innerHTML = `
+                    <div class="no-results">
+                        <h3>No jobs found</h3>
+                        <p>Try adjusting your filters or search terms</p>
+                    </div>
+                `;
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+            
+            // Render jobs
+            jobsGrid.innerHTML = currentJobs.map(job => `
+                <div class="job-card animate-in" data-job-id="${job.id}">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">${job.title}</h3>
+                            <div class="job-company">${job.company}</div>
+                        </div>
+                        <div class="job-logo">${job.logo}</div>
+                    </div>
+                    
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            📍 ${job.location}
+                        </div>
+                        <div class="job-meta-item">
+                            💼 ${job.type}
+                        </div>
+                        <div class="job-meta-item">
+                            📊 ${job.experience}
+                        </div>
+                    </div>
+                    
+                    <div class="job-description">
+                        ${job.description}
+                    </div>
+                    
+                    <div class="job-tags">
+                        ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                    </div>
+                    
+                    <div class="job-footer">
+                        <div class="job-salary">${job.salary}</div>
+                        <div class="job-posted">${job.postedDate}</div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="applyToJob(${job.id})">Apply Now</button>
+                        <button class="btn btn-secondary" onclick="saveJob(${job.id})" ${savedJobs.includes(job.id) ? 'disabled' : ''}>
+                            ${savedJobs.includes(job.id) ? '✓ Saved' : '💾 Save'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Render pagination
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    Previous
+                </button>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="active">${i}</button>`;
+                } else if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `<button onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += `<span>...</span>`;
+                }
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    Next
+                </button>
+            `;
+            
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderJobs();
+            document.querySelector('.main-jobs').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleView(view) {
+            currentView = view;
+            const jobsGrid = document.getElementById('jobsGrid');
+            const buttons = document.querySelectorAll('.view-toggle button');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (view === 'grid') {
+                jobsGrid.classList.add('grid-view');
+            } else {
+                jobsGrid.classList.remove('grid-view');
+            }
+        }
+
+        function applyToJob(jobId) {
+            const job = jobsData.find(j => j.id === jobId);
+            alert(`Application submitted for ${job.title} at ${job.company}! 🎉\n\nYou would be redirected to the company's application portal in a real implementation.`);
+        }
+
+        function saveJob(jobId) {
+            if (!savedJobs.includes(jobId)) {
+                savedJobs.push(jobId);
+                updateSavedJobsCount();
+                renderJobs(); // Re-render to update save button states
+                
+                // Show confirmation
+                const job = jobsData.find(j => j.id === jobId);
+                showNotification(`Saved ${job.title} at ${job.company}!`);
+            }
+        }
+
+        function updateSavedJobsCount() {
+            document.getElementById('savedCount').textContent = savedJobs.length;
+        }
+
+        function toggleSavedJobs() {
+            if (savedJobs.length === 0) {
+                showNotification('No saved jobs yet!');
+                return;
+            }
+            
+            const savedJobsData = jobsData.filter(job => savedJobs.includes(job.id));
+            const jobTitles = savedJobsData.map(job => `• ${job.title} at ${job.company}`).join('\n');
+            
+            alert(`Your Saved Jobs (${savedJobs.length}):\n\n${jobTitles}`);
+        }
+
+        function clearAllFilters() {
+            // Clear all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // Clear salary inputs
+            document.getElementById('minSalary').value = '';
+            document.getElementById('maxSalary').value = '';
+            
+            // Clear search
+            document.getElementById('heroSearch').value = '';
+            
+            // Reset data
+            filteredJobs = [...jobsData];
+            currentPage = 1;
+            
+            // Re-render
+            renderJobs();
+            showNotification('All filters cleared!');
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--secondary-color);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                z-index: 2000;
+                animation: slideDown 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+            }
+            
+            @keyframes slideUp {
+                from {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                clearAllFilters();
+            } else if (e.key === '/' && !e.target.matches('input')) {
+                e.preventDefault();
+                document.getElementById('heroSearch').focus();
+            }
+        });
+
+        // Add smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add loading states for better UX
+        function showLoading() {
+            document.getElementById('jobsGrid').innerHTML = '<div class="loading">Loading amazing opportunities...</div>';
+        }
+
+        // Simulate real-time updates (in a real app, this would be WebSocket or polling)
+        setInterval(() => {
+            // Randomly update job posting dates to simulate freshness
+            const randomJob = jobsData[Math.floor(Math.random() * jobsData.length)];
+            const timePhrases = ['Just posted', '1 hour ago', '2 hours ago', '3 hours ago'];
+            if (Math.random() > 0.95) { // 5% chance
+                randomJob.postedDate = timePhrases[Math.floor(Math.random() * timePhrases.length)];
+            }
+        }, 10000); // Check every 10 seconds
+
+        // Add analytics tracking (placeholder)
+        function trackEvent(eventName, eventData) {
+            console.log(`Analytics: ${eventName}`, eventData);
+            // In a real app, this would send to Google Analytics, Mixpanel, etc.
+        }
+
+        // Track user interactions
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.job-card')) {
+                trackEvent('job_viewed', { jobId: e.target.dataset.jobId });
+            }
+        });
+    </script>
+</body>
+</html>
